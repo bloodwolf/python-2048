@@ -4,7 +4,7 @@ import random
 import curses
 
 class Board(object):
-    newvalues = [2, 4]
+    newvalues = (2, 4)
 
     def __init__(self):
         self.grids = []
@@ -21,7 +21,7 @@ class Board(object):
 
         for t in range(2):
             (i, j) = self.getRandomGrid()
-            self.grids[i][j] = Board.newvalues[random.randint(0, len(Board.newvalues) - 1)]
+            self.grids[i][j] = random.choice(Board.newvalues)
 
     def left(self):
         newgrids = []
