@@ -1,1 +1,1 @@
-# python-2048A simple implement of game 2048 with curses.
+# python-2048A simple implementation of game 2048 with curses.
