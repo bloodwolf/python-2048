@@ -5,6 +5,7 @@ import curses
 
 class Board(object):
     newvalues = (2, 4)
+    color = {0: 1, 2: 1, 4: 1, 8: 2, 16: 3, 32:4 , 64: 5, 128: 6, 256: 2, 512: 3, 1024: 4, 2048: 5, 4096: 6, 8192: 2, 16384: 3, 32768: 4, 65536: 5}
 
     def __init__(self):
         self.grids = []
@@ -13,6 +14,15 @@ class Board(object):
         self.screen.keypad(1)
         curses.noecho()
         curses.cbreak()
+
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+        curses.init_pair(5, curses.COLOR_CYAN, curses.COLOR_BLACK)
+        curses.init_pair(6, curses.COLOR_RED, curses.COLOR_BLACK)
+
         for row in range(4):
             tmp = []
             for column in range(4):
@@ -52,26 +62,36 @@ class Board(object):
         if not self.isSame(oldGrids):
             self.generateNewGrid()
 
-    def output(self):
+    def panel(self):
         ret = []
         ret.append('score: %d' % (self.score))
-        for i in range(4):
-            ret.append('-' * 25)
-            tmp = ''
-            for j in range(4):
-                outputstr = str(self.grids[i][j])
-                if outputstr == '0':
-                    outputstr = ''
-                tmp += '|%5s' % (outputstr)
-            tmp += '|'
-            ret.append(tmp)
-        ret.append('-' * 25)
+        ret.append('-------------------------')
+        ret.append('|     |     |     |     |')
+        ret.append('-------------------------')
+        ret.append('|     |     |     |     |')
+        ret.append('-------------------------')
+        ret.append('|     |     |     |     |')
+        ret.append('-------------------------')
+        ret.append('|     |     |     |     |')
+        ret.append('-------------------------')
         return ret
 
-    def cursesOutput(self):
+    def initScreen(self):
         self.screen.border(0)
-        for i, line in enumerate(self.output()):
+        for i, line in enumerate(self.panel()):
             self.screen.addstr(12 + i, 25, line)
+        self.screen.refresh()
+
+    def refreshScreen(self):
+        self.screen.addstr(12, 32, str(self.score))
+        for i in range(4):
+            for j in range(4):
+                if self.grids[i][j] != 0:
+                    value = '%5s' % (self.grids[i][j])
+                else:
+                    value = '     '
+                self.screen.addstr(14 + i * 2, 26 + j * 6, value, curses.color_pair(Board.color[self.grids[i][j]]))
+        self.screen.addstr(12, 49, '')
         self.screen.refresh()
 
     def getRandomGrid(self):
@@ -149,7 +169,8 @@ class Board(object):
 
 def main():
     b = Board()
-    b.cursesOutput()
+    b.initScreen()
+    b.refreshScreen()
     while True:
         action = b.getInput()
         if action == curses.KEY_LEFT:
@@ -161,7 +182,7 @@ def main():
         elif action == curses.KEY_DOWN:
             b.move('down')
 
-        b.cursesOutput()
+        b.refreshScreen()
         if b.isOver():
             break
     curses.endwin()
