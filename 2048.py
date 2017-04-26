@@ -168,28 +168,31 @@ class Board(object):
         pass
 
 def main():
-    b = Board()
-    b.initScreen()
-    b.refreshScreen()
-    while True:
-        action = b.getInput()
-        if action == curses.KEY_LEFT:
-            b.move('left')
-        elif action == curses.KEY_RIGHT:
-            b.move('right')
-        elif action == curses.KEY_UP:
-            b.move('up')
-        elif action == curses.KEY_DOWN:
-            b.move('down')
-
+    try:
+        b = Board()
+        b.initScreen()
         b.refreshScreen()
-        if b.isOver():
-            break
-    b.screen.keypad(0)
-    curses.echo()
-    curses.nocbreak()
-    curses.endwin()
-    print(b.score)
+        while True:
+            action = b.getInput()
+            if action == curses.KEY_LEFT:
+                b.move('left')
+            elif action == curses.KEY_RIGHT:
+                b.move('right')
+            elif action == curses.KEY_UP:
+                b.move('up')
+            elif action == curses.KEY_DOWN:
+                b.move('down')
+
+            b.refreshScreen()
+            if b.isOver():
+                break
+    finally:
+        b.screen.keypad(0)
+        curses.echo()
+        curses.nocbreak()
+        curses.endwin()
+        print(b.score)
+
 
 if __name__ == '__main__':
     main()
