@@ -185,6 +185,9 @@ def main():
         b.refreshScreen()
         if b.isOver():
             break
+    b.screen.keypad(0)
+    curses.echo()
+    curses.nocbreak()
     curses.endwin()
     print(b.score)
 
