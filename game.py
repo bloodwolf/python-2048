@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import random
 import curses
 
@@ -10,19 +8,6 @@ class Board(object):
     def __init__(self):
         self.grids = []
         self.score = 0
-        self.screen = curses.initscr()
-        self.screen.keypad(1)
-        curses.noecho()
-        curses.cbreak()
-
-        curses.start_color()
-        curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
-        curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-        curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
-        curses.init_pair(5, curses.COLOR_CYAN, curses.COLOR_BLACK)
-        curses.init_pair(6, curses.COLOR_RED, curses.COLOR_BLACK)
-
         for row in range(4):
             tmp = []
             for column in range(4):
@@ -61,38 +46,6 @@ class Board(object):
         getattr(self, direction)()
         if not self.isSame(oldGrids):
             self.generateNewGrid()
-
-    def panel(self):
-        ret = []
-        ret.append('score: %d' % (self.score))
-        ret.append('-------------------------')
-        ret.append('|     |     |     |     |')
-        ret.append('-------------------------')
-        ret.append('|     |     |     |     |')
-        ret.append('-------------------------')
-        ret.append('|     |     |     |     |')
-        ret.append('-------------------------')
-        ret.append('|     |     |     |     |')
-        ret.append('-------------------------')
-        return ret
-
-    def initScreen(self):
-        self.screen.border(0)
-        for i, line in enumerate(self.panel()):
-            self.screen.addstr(12 + i, 25, line)
-        self.screen.refresh()
-
-    def refreshScreen(self):
-        self.screen.addstr(12, 32, str(self.score))
-        for i in range(4):
-            for j in range(4):
-                if self.grids[i][j] != 0:
-                    value = '%5s' % (self.grids[i][j])
-                else:
-                    value = '     '
-                self.screen.addstr(14 + i * 2, 26 + j * 6, value, curses.color_pair(Board.color[self.grids[i][j]]))
-        self.screen.addstr(12, 49, '')
-        self.screen.refresh()
 
     def getRandomGrid(self):
         while True:
@@ -160,12 +113,6 @@ class Board(object):
             for i in range(4):
                 for j in range(4):
                     self.grids[i][j] = oldGrids[j][3 - i]
-
-    def getInput(self):
-        return self.screen.getch()
-
-    def run(self):
-        pass
 
 def main():
     try:
