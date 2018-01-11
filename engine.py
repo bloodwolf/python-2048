@@ -13,6 +13,7 @@ class Engine(object):
         curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
         curses.init_pair(5, curses.COLOR_CYAN, curses.COLOR_BLACK)
         curses.init_pair(6, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.curs_set(0)
 
         self.KEY_UP = curses.KEY_UP
         self.KEY_DOWN = curses.KEY_DOWN
@@ -22,7 +23,7 @@ class Engine(object):
     def initScreen(self):
         self.screen.border()
         ret = []
-        ret.append('score: 0')
+        ret.append('              score:    0')
         ret.append('-------------------------')
         ret.append('|     |     |     |     |')
         ret.append('-------------------------')
@@ -38,7 +39,7 @@ class Engine(object):
         self.screen.refresh()
 
     def refreshScreen(self, data):
-        self.screen.addstr(12, 32, str(data['score']))
+        self.screen.addstr(12, 45, '% 5d' % data['score'])
         for i in range(4):
             for j in range(4):
                 if data['grids'][i][j] != 0:

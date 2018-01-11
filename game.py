@@ -6,8 +6,15 @@ class Board(object):
     color = {0: 1, 2: 1, 4: 1, 8: 2, 16: 3, 32:4 , 64: 5, 128: 6, 256: 2, 512: 3, 1024: 4, 2048: 5, 4096: 6, 8192: 2, 16384: 3, 32768: 4, 65536: 5}
 
     def __init__(self):
+        self.restart()
+
+    def quit(self):
+        self.status = 'quit'
+
+    def restart(self):
         self.grids = []
         self.score = 0
+        self.status = 'playing'
         for row in range(4):
             tmp = []
             for column in range(4):
