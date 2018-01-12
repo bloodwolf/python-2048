@@ -8,9 +8,6 @@ class Board(object):
     def __init__(self):
         self.restart()
 
-    def quit(self):
-        self.status = 'quit'
-
     def restart(self):
         self.grids = []
         self.score = 0

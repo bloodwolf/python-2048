@@ -34,11 +34,17 @@ class Engine(object):
         ret.append('|     |     |     |     |')
         ret.append('-------------------------')
 
+        self.screen.addstr(9, 25, 'r - restart')
+        self.screen.addstr(10, 25, 'q - quit')
         for i, line in enumerate(ret):
             self.screen.addstr(i + 12, 25, line)
         self.screen.refresh()
 
     def refreshScreen(self, data):
+        if data['status'] == 'playing':
+            self.screen.addstr(11, 25, '                  ')
+        else:
+            self.screen.addstr(11, 25, '        Game Over!')
         self.screen.addstr(12, 45, '% 5d' % data['score'])
         for i in range(4):
             for j in range(4):
