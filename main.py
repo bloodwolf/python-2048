@@ -34,9 +34,9 @@ def main():
             data['score'] = b.score
             data['grids'] = b.grids
             data['status'] = b.status
-            e.refreshScreen(data)
             if b.isOver():
                 b.status = 'over'
+            e.refreshScreen(data)
     finally:
         e.end()
 
