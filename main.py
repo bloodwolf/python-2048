@@ -31,11 +31,12 @@ def main():
             if action == ord('r'):
                 b.restart()
 
+            if b.isOver():
+                b.status = 'over'
+
             data['score'] = b.score
             data['grids'] = b.grids
             data['status'] = b.status
-            if b.isOver():
-                b.status = 'over'
             e.refreshScreen(data)
     finally:
         e.end()
